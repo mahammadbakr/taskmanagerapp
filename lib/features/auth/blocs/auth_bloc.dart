@@ -68,8 +68,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
         final data = jsonDecode(res.body);
         if (res.statusCode == 200 && data['data'] != null) {
-          
-          showToastFlutter('get_user_success');
+          // showToastFlutter('get_user_success');
           emit(const GetUserAPISuccessState());
         } else {
           showToastFlutter(data['message'], color: kcRed);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-const Color kcPrimary =  Color(0xfff1c34b);
+const Color kcPrimary =  Color(0xff2B2B2B);
 const Color kcDarkPrimary =  Color.fromARGB(0, 151, 111, 2);
 const Color kcAccent =  Color(0xffF1F1F1);
 const Color kcDarkAccent =  Color(0xff454545);

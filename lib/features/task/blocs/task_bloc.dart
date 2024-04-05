@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:equatable/equatable.dart';
@@ -22,11 +23,22 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   List<TaskModel> _tasks = [];
   List<TaskModel> get tasks => _tasks;
 
+  // formkey
+  final formKey = GlobalKey<FormState>();
+
   // form
-  Map<String, dynamic> form = {};
+  Map<String, dynamic> form = {
+    'isDone': false,
+  };
   Map<String, dynamic> get getForm => form;
 
   TaskBloc() : super(TaskInitial()) {
+    on<FormUpdateEvent>((event, emit) {
+      emit(TaskInitial());
+      form = event.form;
+      emit(const TaskLoadedState());
+    });
+
     on<GetTasksEvent>((event, emit) async {
       try {
         emit(TaskLoadingState());
@@ -37,8 +49,11 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
         if (tasks.isNotEmpty) {
           final List<dynamic> data = jsonDecode(tasks);
           _tasks = data.map((e) => TaskModel.fromJson(e)).toList();
-          emit(const TaskLoadedState());
+
+          // sort tasks by date
+          _tasks.sort((a, b) => a.date!.compareTo(b.date!));
         }
+        emit(const TaskLoadedState());
       } catch (e) {
         log('error_fetch_tasks:$e');
         showToastFlutter('error_fetch_tasks:$e', color: kcRed);
@@ -48,14 +63,72 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
     on<PostTaskEvent>((event, emit) async {
       try {
+        emit(TaskLoadingState());
         showOverlyLoading();
-        
-        final newTask = TaskModel.fromJson(form);
+
+        final newTask = TaskModel(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          title: form['title'],
+          description: form['description'],
+          isDone: form['isDone'],
+          date: DateTime.parse(form['date']),
+        );
         _tasks.add(newTask);
+        // sort tasks by date
+        _tasks.sort((a, b) => a.date!.compareTo(b.date!));
+        // save tasks to local storage
+        await localStorageSetString('tasks', jsonEncode(_tasks));
+        if (navigation.canPop()) navigation.pop();
+        emit(const TaskLoadedState());
+        add(const ClearTaskEvent());
+        hideOverlyLoading();
+      } catch (e) {
+        log('error_fetch_user_task:$e');
+        showToastFlutter('error_fetch_user_task:$e', color: kcRed);
+        hideOverlyLoading();
+        emit(TaskErrorState(message: e.toString()));
+      }
+    });
+
+    on<UpdateTaskEvent>((event, emit) async {
+      try {
+        emit(TaskLoadingState());
+        showOverlyLoading();
+        // update task
+        _tasks = _tasks.map((e) {
+          print(e.id);
+          if (e.id == event.task.id) {
+            return event.task;
+          }
+          return e;
+        }).toList();
+
+        // sort tasks by date
+        _tasks.sort((a, b) => a.date!.compareTo(b.date!));
 
         // save tasks to local storage
         await localStorageSetString('tasks', jsonEncode(_tasks));
+        if (navigation.canPop()) navigation.pop();
+        emit(const TaskLoadedState());
+        add(const ClearTaskEvent());
+        hideOverlyLoading();
+      } catch (e) {
+        log('error_fetch_user_task:$e');
+        showToastFlutter('error_fetch_user_task:$e', color: kcRed);
+        hideOverlyLoading();
+        emit(TaskErrorState(message: e.toString()));
+      }
+    });
 
+    on<DeleteTaskEvent>((event, emit) async {
+      try {
+        emit(TaskLoadingState());
+        showOverlyLoading();
+
+        _tasks.removeWhere((element) => element.id == event.task.id);
+        // save tasks to local storage
+        await localStorageSetString('tasks', jsonEncode(_tasks));
+        if (navigation.canPop()) navigation.pop();
         emit(const TaskLoadedState());
         hideOverlyLoading();
       } catch (e) {
@@ -67,8 +140,9 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     });
 
     on<ClearTaskEvent>((event, emit) {
-      _tasks.clear();
-
+      form = {
+        'isDone': false,
+      };
       emit(TaskInitial());
     });
   }

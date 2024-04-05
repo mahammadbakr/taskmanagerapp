@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taskmanagerapp/core/functions.dart';
 import 'package:taskmanagerapp/core/local_storage.dart';
-import 'package:taskmanagerapp/core/responsive.dart';
 import 'package:taskmanagerapp/features/auth/pages/login_page.dart';
 import 'package:taskmanagerapp/features/landing/blocs/main_bloc.dart';
 import 'package:taskmanagerapp/features/landing/tabs/account_tab.dart';
@@ -39,24 +38,11 @@ class _LandingPageState extends State<LandingPage> {
       bloc: mainBloc,
       builder: (context, state) {
         return Scaffold(
-          // appBar: customAppbar(context: context),
           body: SafeArea(
             bottom: false,
             left: false,
             right: false,
-            child: Container(
-              height: screenHeight(context),
-              decoration: const ShapeDecoration(shape: 
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                ),
-                color: Colors.white,
-              ),
-              child: _tabs[mainBloc.currentIndex],
-            ),
+            child: _tabs[mainBloc.currentIndex],
           ),
           bottomNavigationBar: const CustomNavigation(),
         );

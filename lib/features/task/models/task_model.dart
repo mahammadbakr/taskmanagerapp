@@ -3,12 +3,14 @@ part 'task_model.g.dart';
 
 @JsonSerializable()
 class TaskModel {
-  @JsonKey(name: '_id')
+  @JsonKey(name: 'id')
   String? id;
   @JsonKey(name: 'title')
   String? title;
   @JsonKey(name: 'description')
   String? description;
+  @JsonKey(name: 'isDone')
+  bool isDone;
   @JsonKey(name: 'date')
   DateTime? date;
 
@@ -16,6 +18,7 @@ class TaskModel {
     this.id,
     this.title,
     this.description,
+    this.isDone = false,
     this.date,
   });
 
@@ -28,12 +31,14 @@ class TaskModel {
     String? id,
     String? title,
     String? description,
+    bool isDone = false,
     DateTime? date,
   }) {
     return TaskModel(
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
+      isDone: isDone,
       date: date ?? this.date,
     );
   }

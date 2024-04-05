@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:taskmanagerapp/core/theme.dart';
 import 'package:taskmanagerapp/features/share/widgets/text_widget.dart';
 
-class PickerWidget extends StatelessWidget {
+class DatePickerWidget extends StatelessWidget {
   final FormFieldValidator<String>? validator;
   final TextEditingController? controller;
   final bool? hasPresent;
@@ -17,7 +17,7 @@ class PickerWidget extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final bool? enabled;
   final DateTime? initialDate;
-  const PickerWidget({
+  const DatePickerWidget({
     Key? key,
     required this.hint,
     required this.onChanged,

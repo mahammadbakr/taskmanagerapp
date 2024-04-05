@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:taskmanagerapp/core/assets/gen/assets.gen.dart';
+import 'package:taskmanagerapp/core/functions.dart';
+import 'package:taskmanagerapp/core/theme.dart';
+import 'package:taskmanagerapp/features/task/blocs/task_bloc.dart';
 import 'package:taskmanagerapp/features/task/models/task_model.dart';
+import 'package:taskmanagerapp/features/task/pages/add_edit_task_page.dart';
 
 class TaskCard extends StatelessWidget {
   const TaskCard({super.key, required this.task});
@@ -7,8 +13,8 @@ class TaskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: ShapeDecoration(shape: 
-        RoundedRectangleBorder(
+      decoration: ShapeDecoration(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
         color: Colors.white,
@@ -23,14 +29,14 @@ class TaskCard extends StatelessWidget {
       ),
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(10),
-      child:  Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(
-                Icons.check_circle,
-                color: Colors.green,
+              SvgPicture.asset(
+                Assets.icons.task.path,
+                width: 30,
               ),
               const SizedBox(width: 10),
               Column(
@@ -44,11 +50,42 @@ class TaskCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    task.date?.toIso8601String() ?? '',
+                    task.date?.toIso8601String().split('T')[0] ?? '',
                     style: const TextStyle(
                       fontSize: 12,
                       color: Colors.grey,
                     ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              Column(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      taskBloc.add(UpdateTaskEvent(
+                        task: task.copyWith(isDone: !task.isDone),
+                      ));
+                    },
+                    icon: task.isDone
+                        ? const Icon(Icons.check_circle, color: kcGreen)
+                        : const Icon(Icons.circle, color: kcGrey),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      taskBloc.add(DeleteTaskEvent(task: task));
+                    },
+                    icon: const Icon(Icons.delete, color: kcRed),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      taskBloc.add(FormUpdateEvent(form: {
+                        ...task.toJson(),
+                        'edit': true
+                      }));
+                      navigation.pushNamed(AddEdiTaskPage.route);
+                    },
+                    icon: const Icon(Icons.edit, color: kcBlue),
                   ),
                 ],
               ),

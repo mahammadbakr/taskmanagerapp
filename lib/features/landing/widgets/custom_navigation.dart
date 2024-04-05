@@ -49,7 +49,7 @@ class CustomNavigation extends StatelessWidget {
                 index: 0,
               ),
               navigationTabWidget(
-                icon: Assets.icons.account.path,
+                icon: Assets.icons.task.path,
                 context: context,
                 label: 'task',
                 index: 1,
@@ -88,17 +88,13 @@ class CustomNavigation extends StatelessWidget {
                   ),
                   firstChild: SvgPicture.asset(
                     icon!,
-                    height: index == 2
-                        ? screenHeight(context) * 0.035
-                        : screenHeight(context) * 0.025,
+                    height: screenHeight(context) * 0.025,
                     color: kcPrimary,
                   ),
                   secondChild: SvgPicture.asset(
                     icon,
-                    height: index == 2
-                        ? screenHeight(context) * 0.035
-                        : screenHeight(context) * 0.025,
-                    color: kcBlack,
+                    height:  screenHeight(context) * 0.025,
+                    color: kcGrey,
                   ),
                   // make sure the pageController is not null and attached to the PageView
                   crossFadeState: mainBloc.currentIndex == index
