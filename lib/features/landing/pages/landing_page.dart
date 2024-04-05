@@ -25,9 +25,6 @@ class _LandingPageState extends State<LandingPage> {
       if (token.isEmpty) {
         navigation.pushNamedAndRemoveUntil(LoginPage.route, (route) => false);
       }
-      // if (authBloc.userModel == null) {
-      //   mainBloc.add(const GetUserAPIEvent());
-      // }
     });
     super.initState();
   }
