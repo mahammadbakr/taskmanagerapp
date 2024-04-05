@@ -6,10 +6,30 @@ A new Flutter project.
 
 This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Clone the repsitory
+
+to clne the repository run  this command in your terminal 
+(Before that: Make sure to setup git n your machine)
+
+```dart
+git clone https://github.com/mahammadbakr/taskmanagerapp
+```
+
+## Running flutter app
+
+Start the app you must get dependencies by running
+(Before that: Make sure to setup flutter sdk)
+
+```dart
+flutter pub get
+```
+
+And then run the app by entering the follwing command
+```dart
+flutter run
+```
+
 
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
