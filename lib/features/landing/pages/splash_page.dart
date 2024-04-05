@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:taskmanagerapp/core/functions.dart';
 import 'package:taskmanagerapp/core/local_storage.dart';
 import 'package:taskmanagerapp/core/theme.dart';
+import 'package:taskmanagerapp/features/auth/blocs/auth_bloc.dart';
 import 'package:taskmanagerapp/features/auth/pages/login_page.dart';
-import 'package:taskmanagerapp/features/landing/blocs/main_bloc.dart';
+import 'package:taskmanagerapp/features/landing/pages/landing_page.dart';
 import 'package:taskmanagerapp/features/share/widgets/loading_widget.dart';
 
 class SplashPage extends StatefulWidget {
@@ -23,7 +24,8 @@ class _SplashPageState extends State<SplashPage> {
       if (token.isEmpty || token == '') {
         navigation.pushNamedAndRemoveUntil(LoginPage.route, (route) => false);
       } else {
-        mainBloc.add(const GetHomeAPIEvent());
+        navigation.pushNamedAndRemoveUntil(LandingPage.route, (route) => false);
+        authBloc.add(const GetUserAPIEvent());
       }
     });
     super.initState();

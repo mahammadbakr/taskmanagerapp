@@ -8,13 +8,13 @@ import 'package:taskmanagerapp/core/logger.dart';
 import 'local_storage.dart';
 
 // live domain
-// const String apiDomain = 'https://task-manager.onrender.com/api/v1';
+// const String apiDomain = 'https://reqres.in/api/';
 
 // dev domain
-// const String apiDomain = 'https://task-manager.onrender.com/api/v1';
+// const String apiDomain = 'https://reqres.in/api/';
 
 // local host
-const String apiDomain = "http://localhost:8080/api/v1";
+const String apiDomain = "https://reqres.in/api/";
 
 class RemoteSources {
   static Future<Response> get(String route) async {

@@ -9,4 +9,9 @@ sealed class AuthEvent extends Equatable {
 
 class LoginAPIEvent extends AuthEvent {}
 
+
+final class GetUserAPIEvent extends AuthEvent {
+  const GetUserAPIEvent();
+}
+
 class LogoutEvent extends AuthEvent {}

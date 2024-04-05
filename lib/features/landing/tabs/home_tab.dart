@@ -9,7 +9,7 @@ class HomeTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainBloc, MainState>(
-      bloc: mainBloc..add(const GetAdsEvent()),
+      bloc: mainBloc,
       builder: (context, state) {
         return Container();
       },
