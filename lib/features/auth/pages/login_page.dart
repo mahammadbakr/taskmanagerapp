@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taskmanagerapp/features/auth/blocs/auth_bloc.dart';
+import 'package:taskmanagerapp/features/share/widgets/text_button_widget.dart';
+import 'package:taskmanagerapp/features/share/widgets/text_field_widget.dart';
+import 'package:taskmanagerapp/features/share/widgets/text_widget.dart';
 
 class LoginPage extends StatelessWidget {
   static const route = '/login';
@@ -6,8 +11,36 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Login Page')),
-    );
+    return Scaffold(
+        // simple login page
+        body: BlocBuilder<AuthBloc, AuthState>(
+      bloc: authBloc,
+      builder: (context, state) {
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const TextWidget('Login Page'),
+                const SizedBox(height: 20),
+                const TextFieldWidget(
+                  hint: 'Email',
+                ),
+                const TextFieldWidget(
+                  hint: 'Password',
+                  obscureText: true,
+                ),
+                const SizedBox(height: 20),
+                TextButtonWidget(
+                  onPressed: () {},
+                  text: 'Login',
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ));
   }
 }
